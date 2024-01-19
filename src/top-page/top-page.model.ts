@@ -14,10 +14,10 @@ export class TopPageModel {
     juniorSalary: number;
     middleSalary: number;
     seniorSalary: number;
-  }
+  };
   advantages: {
     title: string;
-    description: string
+    description: string;
   }[];
   seoText: string;
   tagsTitle: string;
