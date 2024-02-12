@@ -12,8 +12,14 @@ import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/test'),
     ConfigModule.forRoot(),
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_AUTHDATABASE}`,
+        user: process.env.MONGO_LOGIN,
+        pass: process.env.MONGO_PASSWORD,
+      }),
+    }),
     AuthModule,
     TopPageModule,
     ProductModule,
@@ -29,19 +35,21 @@ export class AppModule {
   }
 
   private async connectToDatabase() {
-    const uri = 'mongodb://localhost/test';
+    const uri = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
 
     try {
-      const client = new MongoClient(uri);
+      const client = new MongoClient(uri, {
+        auth: {
+          username: process.env.MONGO_LOGIN,
+          password: process.env.MONGO_PASSWORD,
+        },
+        authSource: process.env.MONGO_AUTHDATABASE,
+      });
+
       await client.connect();
-      //const collection = client.db().collection('collection');
       console.log('Connected to MongoDB');
 
       // В этом месте вы можете использовать объект client для выполнения операций с базой данных
-
-      // Пример:
-      //const db = client.db('имя_вашей_базы_данных');
-      //const collection = db.collection('ваша_коллекция');
     } catch (error) {
       console.error('Error connecting to MongoDB:', error);
     }

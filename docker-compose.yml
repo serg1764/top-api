@@ -1,13 +1,14 @@
 version: '3'
 services:
   mongo:
-    image: mongo:4.4.4
+    image: mongo:latest
     container_name: mongo
-    restart: always
+    #restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_DB: mydb # Имя базы данных, которую вы хотите создать при инициализации
     ports:
-      - 27017:27017
+      - "27017:27017"
     volumes:
-      - ./mongo-data-4.4:/data/db
+      - ./mongo-data-6.0.7:/data/db
