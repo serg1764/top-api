@@ -7,8 +7,10 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
-      MONGO_DB: mydb # Имя базы данных, которую вы хотите создать при инициализации
+      #MONGO_DB: mydb2 # Имя базы данных, которую вы хотите создать при инициализации
+      MONGO_INITDB_DATABASE: mydb2  # Замените на имя вашей базы данных
+
     ports:
       - "27017:27017"
     volumes:
-      - ./mongo-data-6.0.7:/data/db
+      - ./mongo-data-6.0.7:/data/mydb2
