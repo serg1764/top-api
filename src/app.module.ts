@@ -16,11 +16,18 @@ import { UsersModule } from './users/users.module';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        uri: `mongodb://${configService.get('MONGO_HOST')}:${configService.get('MONGO_PORT')}/${configService.get('MONGO_AUTHDATABASE')}`,
-        user: configService.get('MONGO_LOGIN'),
-        pass: configService.get('MONGO_PASSWORD'),
-      }),
+      useFactory: (configService: ConfigService) => {
+        console.log(
+          `mongodb://${configService.get('MONGO_HOST')}:${configService.get('MONGO_PORT')}`,
+        );
+        console.log(configService.get('MONGO_LOGIN'));
+        console.log(configService.get('MONGO_PASSWORD'));
+        return {
+          uri: `mongodb://${configService.get('MONGO_HOST')}:${configService.get('MONGO_PORT')}`,
+          user: configService.get('MONGO_LOGIN'),
+          pass: configService.get('MONGO_PASSWORD'),
+        };
+      },
     }),
     AuthModule,
     TopPageModule,
@@ -32,28 +39,28 @@ import { UsersModule } from './users/users.module';
   providers: [AppService],
 })
 export class AppModule {
-  constructor() {
-    this.connectToDatabase();
-  }
-
-  private async connectToDatabase() {
-    const uri = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
-
-    try {
-      const client = new MongoClient(uri, {
-        auth: {
-          username: process.env.MONGO_LOGIN,
-          password: process.env.MONGO_PASSWORD,
-        },
-        authSource: process.env.MONGO_AUTHDATABASE,
-      });
-
-      await client.connect();
-      console.log('Connected to MongoDB');
-
-      // В этом месте вы можете использовать объект client для выполнения операций с базой данных
-    } catch (error) {
-      console.error('Error connecting to MongoDB:', error);
+  /*  constructor() {
+      this.connectToDatabase();
     }
-  }
+
+    private async connectToDatabase() {
+      const uri = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
+
+      try {
+        const client = new MongoClient(uri, {
+          auth: {
+            username: process.env.MONGO_LOGIN,
+            password: process.env.MONGO_PASSWORD,
+          },
+          authSource: process.env.MONGO_AUTHDATABASE,
+        });
+
+        await client.connect();
+        console.log('Connected to MongoDB');
+
+        // В этом месте вы можете использовать объект client для выполнения операций с базой данных
+      } catch (error) {
+        console.error('Error connecting to MongoDB:', error);
+      }
+    }*/
 }
