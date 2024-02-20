@@ -38,29 +38,4 @@ import { UsersModule } from './users/users.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  /*  constructor() {
-      this.connectToDatabase();
-    }
-
-    private async connectToDatabase() {
-      const uri = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
-
-      try {
-        const client = new MongoClient(uri, {
-          auth: {
-            username: process.env.MONGO_LOGIN,
-            password: process.env.MONGO_PASSWORD,
-          },
-          authSource: process.env.MONGO_AUTHDATABASE,
-        });
-
-        await client.connect();
-        console.log('Connected to MongoDB');
-
-        // В этом месте вы можете использовать объект client для выполнения операций с базой данных
-      } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
-      }
-    }*/
-}
+export class AppModule {}
