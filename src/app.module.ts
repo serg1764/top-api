@@ -17,11 +17,11 @@ import { UsersModule } from './users/users.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        console.log(
+        /*console.log(
           `mongodb://${configService.get('MONGO_HOST')}:${configService.get('MONGO_PORT')}`,
         );
         console.log(configService.get('MONGO_LOGIN'));
-        console.log(configService.get('MONGO_PASSWORD'));
+        console.log(configService.get('MONGO_PASSWORD'));*/
         return {
           uri: `mongodb://${configService.get('MONGO_HOST')}:${configService.get('MONGO_PORT')}`,
           user: configService.get('MONGO_LOGIN'),
@@ -35,7 +35,7 @@ import { UsersModule } from './users/users.module';
     ReviewModule,
     UsersModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  /*controllers: [AppController],
+  providers: [AppService],*/
 })
 export class AppModule {}
