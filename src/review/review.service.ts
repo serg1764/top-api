@@ -19,10 +19,17 @@ export class ReviewService {
     return this.reviewModel.findByIdAndDelete(id).exec();
   }
 
-  async findByProductID(productId: string): Promise<Document[]> {
-    return this.reviewModel
-      .find({ productId: new Types.ObjectId(productId) })
-      .exec();
+  async findByProductID(productId: string): Promise<ReviewModel[]> {
+    //const myProductID = { productId: new Types.ObjectId(productId) };
+    const myProductID1 = { productId: productId };
+    //const myProductID2 = { productId: '65d7084ded787563f5953934' };
+    const reviews = await this.reviewModel.find(myProductID1).exec();
+
+    /*console.log('myProductID:', myProductID);
+    console.log('myProductID1:', myProductID1);
+    console.log('findByProductID Query:', reviews);*/
+
+    return reviews;
   }
 
   async deleteByProductID(productId: string) {

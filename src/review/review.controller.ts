@@ -11,6 +11,7 @@ import {
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
 import { REVIEW_NOT_FOUND } from './review.constants';
+import { ProductModel } from "../product/product.model";
 
 @Controller('review')
 export class ReviewController {
@@ -31,6 +32,7 @@ export class ReviewController {
 
   @Get('byProduct/:productId')
   async getByProduct(@Param('productId') productId: string) {
+    //console.log(productId);
     return this.reviewService.findByProductID(productId);
   }
 }

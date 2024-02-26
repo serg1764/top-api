@@ -5,6 +5,7 @@ import { AppModule } from '../src/app.module';
 import { Types, disconnect } from 'mongoose';
 import { CreateReviewDto } from '../src/review/dto/create-review.dto';
 import { response } from 'express';
+import { REVIEW_NOT_FOUND } from '../src/review/review.constants';
 
 const productID = new Types.ObjectId().toHexString();
 
@@ -20,6 +21,7 @@ const testDto: CreateReviewDto = {
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let createdId: string;
+  let myProductId: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -40,10 +42,59 @@ describe('AppController (e2e)', () => {
     expect(createdId).toBeDefined();
   });
 
+  it('/review/byProduct/:productId (GET) - success', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/review/byProduct/' + productID)
+      .expect(200);
+
+    /*myProductId = response.body.productId;
+    console.log(productID);
+    console.log('бла бла бла');
+    console.log(response);
+    console.log(response.body);
+    console.log(myProductId);
+    expect(response.body.length).toBe(1);*/
+
+    /*console.log(JSON.parse(response.text));
+    const responseBody = JSON.parse(response.text);
+    expect(responseBody.length).toBe(1);*/
+
+    expect(response.body.length).toBe(1);
+  });
+
+  it('/review/byProduct/:productId (GET) - fail', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/review/byProduct/' + '123')
+      .expect(200);
+
+    /*myProductId = response.body.productId;
+    console.log(productID);
+    console.log('бла бла бла');
+    console.log(response);
+    console.log(response.body);
+    console.log(myProductId);
+    expect(response.body.length).toBe(1);*/
+
+    /*console.log(JSON.parse(response.text));
+    const responseBody = JSON.parse(response.text);
+    expect(responseBody.length).toBe(1);*/
+
+    expect(response.body.length).toBe(0);
+  });
+
   it('/review/:id (DELETE) - success', () => {
     return request(app.getHttpServer())
       .delete('/review/' + createdId)
       .expect(200);
+  });
+
+  it('/review/:id (DELETE) - fail', () => {
+    return request(app.getHttpServer())
+      .delete('/review/' + '123')
+      .expect(404, {
+        statusCode: 404,
+        message: REVIEW_NOT_FOUND,
+      });
   });
 
   afterAll(() => {
