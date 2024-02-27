@@ -37,4 +37,8 @@ describe('ReviewService', () => {
     const res = await service.findByProductID(id);
     expect(res[0].productId).toBe(id);
   });
+
+  afterEach(async () => {
+    console.log('выполнилось');
+  });
 });

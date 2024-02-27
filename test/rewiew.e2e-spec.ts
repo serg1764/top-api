@@ -15,7 +15,7 @@ const testDto: CreateReviewDto = {
   title: 'Загаловок',
   description: 'Описание',
   productId: productID,
-  rating: '5 stars',
+  rating: 5,
 };
 
 describe('AppController (e2e)', () => {
@@ -40,6 +40,24 @@ describe('AppController (e2e)', () => {
 
     createdId = response.body._id;
     expect(createdId).toBeDefined();
+  });
+
+  /*it('/review/create (POST) - fail', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/review/create')
+      .send({ ...testDto, rating: 0 })
+      .expect(400);
+  });*/
+
+  it('/review/create (POST) - fail', () => {
+    return request(app.getHttpServer())
+      .post('/review/create')
+      .send({ ...testDto, rating: 0 })
+      .expect(400, {
+        error: 'Bad Request',
+        statusCode: 400,
+        message: ['Рейтинг не может быть меньше 1'],
+      });
   });
 
   it('/review/byProduct/:productId (GET) - success', async () => {
