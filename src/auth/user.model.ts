@@ -5,21 +5,18 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
  * интерфейс если они в разном лежат*/
 
 @Schema()
-export class AuthModel {
-  @Prop()
-  _id: string;
-
-  @Prop({ unique: true }) // Устанавливаем уникальность для email
+export class UserModel {
+  @Prop({ type: String, unique: true, index: true, required: true }) // Устанавливаем уникальность для email
   email: string;
 
   @Prop()
   passwordHash: string;
 
-  @Prop()
+  @Prop({ type: Date, default: Date.now })
   createdAt?: Date;
 
-  @Prop()
+  @Prop({ type: Date, default: null })
   updatedAt?: Date;
 }
 
-export const AuthSchema = SchemaFactory.createForClass(AuthModel);
+export const AuthSchema = SchemaFactory.createForClass(UserModel);
