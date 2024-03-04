@@ -6,8 +6,14 @@ import { Types, disconnect } from 'mongoose';
 import { CreateReviewDto } from '../src/review/dto/create-review.dto';
 import { response } from 'express';
 import { REVIEW_NOT_FOUND } from '../src/review/review.constants';
+import { AuthDto } from '../src/auth/dto/auth.dto';
 
 const productID = new Types.ObjectId().toHexString();
+
+const loginDto: AuthDto = {
+  login: 'serg17643@gmail.com',
+  password: '1',
+};
 
 const testDto: CreateReviewDto = {
   _id: new Types.ObjectId().toHexString(),
@@ -22,6 +28,7 @@ describe('AppController (e2e)', () => {
   let app: INestApplication;
   let createdId: string;
   let myProductId: string;
+  let token: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -30,6 +37,11 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    const { body } = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send(loginDto);
+    token = body.access_token;
   });
 
   it('/review/create (POST) - success', async () => {
@@ -61,8 +73,11 @@ describe('AppController (e2e)', () => {
   });
 
   it('/review/byProduct/:productId (GET) - success', async () => {
+    console.log(productID);
+    console.log(token);
     const response = await request(app.getHttpServer())
       .get('/review/byProduct/' + productID)
+      .set('Authorization', 'Bearer ' + token)
       .expect(200);
 
     /*myProductId = response.body.productId;
@@ -83,6 +98,7 @@ describe('AppController (e2e)', () => {
   it('/review/byProduct/:productId (GET) - fail', async () => {
     const response = await request(app.getHttpServer())
       .get('/review/byProduct/' + '123')
+      .set('Authorization', 'Bearer ' + token)
       .expect(200);
 
     /*myProductId = response.body.productId;
@@ -103,12 +119,14 @@ describe('AppController (e2e)', () => {
   it('/review/:id (DELETE) - success', () => {
     return request(app.getHttpServer())
       .delete('/review/' + createdId)
+      .set('Authorization', 'Bearer ' + token)
       .expect(200);
   });
 
   it('/review/:id (DELETE) - fail', () => {
     return request(app.getHttpServer())
       .delete('/review/' + '123')
+      .set('Authorization', 'Bearer ' + token)
       .expect(404, {
         statusCode: 404,
         message: REVIEW_NOT_FOUND,
