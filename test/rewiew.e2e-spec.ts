@@ -15,6 +15,16 @@ const loginDto: AuthDto = {
   password: '1',
 };
 
+const loginDtoTest1: AuthDto = {
+  login: 'serg1764@gmail.com',
+  password: '1',
+};
+
+const loginDtoTest2: AuthDto = {
+  login: 'serg1764@gmail.com',
+  password: '2',
+};
+
 const testDto: CreateReviewDto = {
   _id: new Types.ObjectId().toHexString(),
   name: 'Test',
@@ -29,6 +39,7 @@ describe('AppController (e2e)', () => {
   let createdId: string;
   let myProductId: string;
   let token: string;
+  let resultMy;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -42,6 +53,30 @@ describe('AppController (e2e)', () => {
       .post('/auth/login')
       .send(loginDto);
     token = body.access_token;
+  });
+
+  it('/auth/login (POST) - success', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send(loginDtoTest1)
+      .expect(200);
+
+    resultMy = response.body.access_token;
+    console.log(resultMy);
+    expect(resultMy).toBeDefined();
+  });
+
+  it('/auth/login (POST) - success', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send(loginDtoTest2)
+      .expect(401);
+
+    const { message, error, statusCode } = response.body;
+    console.log(message);
+    expect(message).toBeDefined();
+    expect(error).toBeDefined();
+    expect(statusCode).toBeDefined();
   });
 
   it('/review/create (POST) - success', async () => {
