@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { ReviewModel } from '';
+import { ReviewModel } from 'src/review/review.model';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductDto } from './dto/find-product.dto';
 import { ProductModel } from './product.model';
@@ -25,12 +25,12 @@ export class ProductService {
     return this.productModel.findByIdAndDelete(id).exec();
   }
 
-  async updateById(id: string, dto: CreateProductDto) {
+  async updateById(id: string, dto: ProductModel) {
     return this.productModel.findByIdAndUpdate(id, dto, { new: true }).exec();
   }
 
   async findWithReviews(dto: FindProductDto) {
-    return this.productModel
+    return (await this.productModel
       .aggregate([
         {
           $match: {
@@ -60,7 +60,7 @@ export class ProductService {
           },
         },
       ])
-      .exec() as (ProductModel & {
+      .exec()) as (ProductModel & {
       review: ReviewModel[];
       reviewCount: number;
       reviewAvg: number;

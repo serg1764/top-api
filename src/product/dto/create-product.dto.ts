@@ -17,6 +17,9 @@ class ProductCharacteristicDto {
 
 export class CreateProductDto {
   @IsString()
+  _id: string; // Добавляем поле _id
+
+  @IsString()
   image: string;
 
   @IsString()
