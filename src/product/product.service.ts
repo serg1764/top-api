@@ -47,7 +47,7 @@ export class ProductService {
         },
         {
           $lookup: {
-            from: 'Review',
+            from: 'reviewmodels',
             localField: '_id',
             foreignField: 'productId',
             as: 'reviews',
@@ -61,7 +61,7 @@ export class ProductService {
         },
       ])
       .exec()) as (ProductModel & {
-      review: ReviewModel[];
+      reviews: ReviewModel[];
       reviewCount: number;
       reviewAvg: number;
     })[];

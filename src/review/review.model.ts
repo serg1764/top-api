@@ -15,7 +15,7 @@ export class ReviewModel {
   description: string;
 
   @Prop()
-  rating: string;
+  rating: number;
 
   @Prop()
   createdAt: Date;
