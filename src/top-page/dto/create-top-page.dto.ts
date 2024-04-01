@@ -5,68 +5,75 @@ import {
   IsOptional,
   ValidateNested,
   IsArray,
+  IsDate,
+  IsEnum,
 } from 'class-validator';
+import { TopLevelCategory } from '../top-page.model';
 
-class ProductCharacteristicDto {
-  @IsString()
-  name: string;
+class HhDataDto {
+  @IsNumber()
+  count: number;
 
-  @IsString()
-  value: string;
+  @IsNumber()
+  juniorSalary: number;
+
+  @IsNumber()
+  middleSalary: number;
+
+  @IsNumber()
+  seniorSalary: number;
 }
-class TopLevelCategoryDto {
-  @IsNumber()
-  Courses: number;
 
-  @IsNumber()
-  Services: number;
+export class TopPageAdvantageDto {
+  @IsString()
+  title: string;
 
-  @IsNumber()
-  Books: number;
-
-  @IsNumber()
-  Products: number;
+  @IsString()
+  description: string;
 }
 
 export class CreateTopPageDto {
   @IsString()
   _id: string; // Добавляем поле _id
 
+  @IsEnum(TopLevelCategory)
+  firstCategory: TopLevelCategory;
+
   @IsString()
-  image: string;
+  secondCategory: string;
+
+  @IsString()
+  alias: string;
 
   @IsString()
   title: string;
 
-  @IsNumber()
-  price: number;
+  @IsString()
+  category: string;
 
   @IsOptional()
-  @IsNumber()
-  oldPrice?: number;
-
-  @IsNumber()
-  credit: number;
-
-  @IsString()
-  description: string;
-
-  @IsString()
-  advantages: string;
-
-  @IsString()
-  disAdvantages: string;
+  @ValidateNested()
+  @Type(() => HhDataDto)
+  hh?: HhDataDto;
 
   @IsArray()
-  @IsString({ each: true })
-  categories: string[];
+  @ValidateNested()
+  @Type(() => TopPageAdvantageDto)
+  advantages: TopPageAdvantageDto[];
+
+  @IsString()
+  seoText: string;
+
+  @IsString()
+  tagsTitle: string;
 
   @IsArray()
   @IsString({ each: true })
   tags: string[];
 
-  @IsArray()
-  @ValidateNested()
-  @Type(() => ProductCharacteristicDto)
-  characteristics: ProductCharacteristicDto[];
+  @IsDate()
+  createdAt?: Date;
+
+  @IsDate()
+  updatedAt?: Date;
 }

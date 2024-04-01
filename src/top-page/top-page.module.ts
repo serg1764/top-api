@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TopPageController } from './top-page.controller';
 import { TopPageModel, TopPageSchema } from './top-page.model';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TopPageService } from './top-page.service';
 
 @Module({
   controllers: [TopPageController],
@@ -13,5 +14,6 @@ import { MongooseModule } from '@nestjs/mongoose';
       },
     ]),
   ],
+  providers: [TopPageService],
 })
 export class TopPageModule {}
