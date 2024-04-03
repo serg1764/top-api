@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { text } from 'express';
 
 export enum TopLevelCategory {
   Courses,
@@ -72,3 +73,6 @@ export class TopPageModel {
 }
 
 export const TopPageSchema = SchemaFactory.createForClass(TopPageModel);
+
+// Создание индекса для полей title и seoText
+TopPageSchema.index({ title: 'text', seoText: 'text' });
