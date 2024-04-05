@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MongoClient } from 'mongodb';
 import { UsersModule } from './users/users.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { UsersModule } from './users/users.module';
     ProductModule,
     ReviewModule,
     UsersModule,
+    FilesModule,
   ],
   /*controllers: [AppController],
   providers: [AppService],*/
