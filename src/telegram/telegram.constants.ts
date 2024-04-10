@@ -1,0 +1,1 @@
+export const TELEGRAM_MODULE_OPTIONS = 'AAG5h6fbr3L98Bx7twjfc6kcPLDEeyQS6OY';

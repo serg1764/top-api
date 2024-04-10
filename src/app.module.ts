@@ -11,9 +11,14 @@ import { MongoClient } from 'mongodb';
 import { UsersModule } from './users/users.module';
 import { FilesModule } from './files/files.module';
 import { SitemapModule } from './sitemap/sitemap.module';
+import { TelegramModule } from './telegram/telegram.module';
+import { getTelegramConfig } from './config/telegram.config';
+import { HhModule } from './hh/hh.module';
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -38,6 +43,12 @@ import { SitemapModule } from './sitemap/sitemap.module';
     UsersModule,
     FilesModule,
     SitemapModule,
+    TelegramModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getTelegramConfig,
+    }),
+    HhModule,
   ],
   /*controllers: [AppController],
   providers: [AppService],*/
